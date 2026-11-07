@@ -262,3 +262,160 @@ export const QUESTIONS_SET_B = [
       'The AWS Pricing Calculator estimates the cost of planned AWS services before you build. Cost Explorer analyzes past spending, Budgets alerts on spending thresholds, and Trusted Advisor gives optimization recommendations.',
   },
 ];
+
+// ---------------------------------------------------------------------------
+// AZ-900 — Microsoft Azure Fundamentals (added 7 Nov 2026)
+// 10 original practice questions, written in official exam style, NOT copied
+// from Microsoft. Every answer is grounded in the official AZ-900 study
+// guide (Microsoft Learn, skills measured as of July 20, 2026):
+// https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900
+// Per-question verification: ../verification-az900.md
+// Exam facts: pass score 700 or greater (study guide); 45 minutes and
+// $99 USD fee per the Microsoft Learn AZ-900 certification page.
+// No pass-rate claims, no Microsoft endorsement anywhere on this site.
+
+export const AZ900_FACTS = {
+  code: 'AZ-900',
+  name: 'Microsoft Azure Fundamentals',
+  timeMinutes: 45,
+  passingScore: '700 / 1,000 (scaled)',
+  cost: '$99 USD',
+  domains: [
+    { name: 'Describe cloud concepts', weight: '25–30%' },
+    { name: 'Describe Azure architecture and services', weight: '35–40%' },
+    { name: 'Describe Azure management and governance', weight: '30–35%' },
+  ],
+};
+
+export const QUESTIONS_AZ900 = [
+  {
+    id: 101,
+    domain: 'Describe cloud concepts (25–30%)',
+    question:
+      'A company stores customer data in Azure. Under the shared responsibility model, which of the following is always the customer\u2019s responsibility?',
+    options: [
+      'Physical security of the Azure datacenters',
+      'Patching the physical host servers',
+      'Protecting the company\u2019s own data and controlling who can access it',
+      'Maintaining the Azure hypervisor',
+    ],
+    answer: 2,
+    explanation:
+      'In the shared responsibility model, Microsoft is responsible for the physical datacenter, host servers, and virtualization layer, while the customer is always responsible for its own data and for access control (identities and permissions). The study guide lists "Describe the shared responsibility model" under Describe cloud concepts.',
+  },
+  {
+    id: 102,
+    domain: 'Describe cloud concepts (25–30%)',
+    question:
+      'A small business wants to use email and office apps over the internet without installing, patching, or managing any of the underlying software. Which cloud service type is this?',
+    options: [
+      'Infrastructure as a service (IaaS)',
+      'Platform as a service (PaaS)',
+      'Software as a service (SaaS)',
+      'Serverless computing',
+    ],
+    answer: 2,
+    explanation:
+      'Software as a service (SaaS) delivers finished applications over the internet — the provider manages the software, patching, and infrastructure, and the customer just uses the app (for example, Microsoft 365). The study guide lists describing IaaS, PaaS, and SaaS and identifying appropriate use cases for each.',
+  },
+  {
+    id: 103,
+    domain: 'Describe cloud concepts (25–30%)',
+    question:
+      'An online retailer expects traffic to spike sharply on a holiday weekend and fall back to normal afterwards. Which benefit of cloud services best describes automatically adding capacity for the spike and removing it afterwards?',
+    options: ['Predictability', 'Scalability', 'Governance', 'Manageability'],
+    answer: 1,
+    explanation:
+      'Scalability is the ability to increase and decrease resources to match demand — scaling out for a traffic spike and back in afterwards. The study guide lists describing the benefits of high availability and scalability in the cloud under Describe cloud concepts.',
+  },
+  {
+    id: 104,
+    domain: 'Describe Azure architecture and services (35–40%)',
+    question:
+      'A company runs a critical application in an Azure region and wants it to keep running if one datacenter in that region fails. Which Azure feature is designed for this?',
+    options: [
+      'Region pairs',
+      'Availability zones',
+      'Management groups',
+      'Resource locks',
+    ],
+    answer: 1,
+    explanation:
+      'Availability zones are physically separate datacenters within an Azure region, each with independent power, cooling, and networking. Deploying across more than one zone keeps an application running if a single datacenter fails. The study guide lists "Describe availability zones" under the core architectural components of Azure.',
+  },
+  {
+    id: 105,
+    domain: 'Describe Azure architecture and services (35–40%)',
+    question:
+      'In the Azure resource hierarchy, which order is correct from the broadest scope to the most specific?',
+    options: [
+      'Resource group → Subscription → Management group → Resource',
+      'Management group → Subscription → Resource group → Resource',
+      'Subscription → Management group → Resource → Resource group',
+      'Resource → Resource group → Subscription → Management group',
+    ],
+    answer: 1,
+    explanation:
+      'The hierarchy is management groups at the top, then subscriptions, then resource groups, then individual resources. Management groups apply governance across subscriptions, subscriptions are billing and access boundaries, and resource groups hold related resources. The study guide lists describing resources, resource groups, subscriptions, management groups, and their hierarchy.',
+  },
+  {
+    id: 106,
+    domain: 'Describe Azure architecture and services (35–40%)',
+    question:
+      'A company stores video files in Azure Blob Storage that are rarely watched but must be kept for several years at the lowest possible storage cost. Retrieval can take several hours. Which access tier is the best fit?',
+    options: ['Hot tier', 'Cool tier', 'Archive tier', 'Premium tier'],
+    answer: 2,
+    explanation:
+      'Blob Storage access tiers trade storage cost against retrieval speed: Hot is for frequently accessed data, Cool for infrequently accessed data stored at least 30 days, and Archive is the lowest-cost tier for rarely accessed data kept for years, with retrieval taking hours. The study guide lists "Describe storage tiers" under Azure storage services.',
+  },
+  {
+    id: 107,
+    domain: 'Describe Azure architecture and services (35–40%)',
+    question:
+      'An administrator wants to give a developer permission to read virtual machines in one resource group, and nothing else. Which Azure feature controls this?',
+    options: [
+      'Microsoft Entra Conditional Access',
+      'Azure role-based access control (RBAC)',
+      'Microsoft Defender for Cloud',
+      'Azure Policy',
+    ],
+    answer: 1,
+    explanation:
+      'Azure role-based access control (RBAC) grants permissions by assigning a role (such as Reader) to a person at a specific scope, such as one resource group. Conditional Access controls sign-in conditions, Defender for Cloud assesses security posture, and Azure Policy enforces rules about what resources can be created. The study guide lists "Describe Azure role-based access control (RBAC)".',
+  },
+  {
+    id: 108,
+    domain: 'Describe Azure architecture and services (35–40%)',
+    question:
+      'A company needs a private, dedicated network connection from its on-premises datacenter to Azure that does not travel over the public internet. Which service provides this?',
+    options: ['Azure VPN Gateway', 'Azure DNS', 'Azure ExpressRoute', 'Virtual network peering'],
+    answer: 2,
+    explanation:
+      'Azure ExpressRoute is a private, dedicated connection between on-premises infrastructure and Azure that does not go over the public internet. VPN Gateway encrypts traffic over the public internet, DNS resolves names, and virtual network peering connects virtual networks inside Azure. The study guide lists ExpressRoute and VPN Gateway under virtual networking.',
+  },
+  {
+    id: 109,
+    domain: 'Describe Azure management and governance (30–35%)',
+    question:
+      'A company wants to make sure no one in the organization can create virtual machines in a region where the company does not operate. Which Azure feature enforces this kind of rule automatically?',
+    options: ['Azure Policy', 'Resource locks', 'Azure Cost Management', 'Microsoft Purview'],
+    answer: 0,
+    explanation:
+      'Azure Policy enforces rules over resources — for example, allowing virtual machines only in approved regions — and can deny or audit non-compliant deployments automatically. Resource locks prevent deletion or modification, Cost Management tracks spending, and Microsoft Purview governs data. The study guide lists "Describe the purpose of Azure Policy".',
+  },
+  {
+    id: 110,
+    domain: 'Describe Azure management and governance (30–35%)',
+    question:
+      'Before deploying a solution, a team wants a free estimate of what its planned Azure resources would cost each month. Which tool should it use?',
+    options: [
+      'Azure Advisor',
+      'Azure Monitor',
+      'The Azure pricing calculator',
+      'Azure Service Health',
+    ],
+    answer: 2,
+    explanation:
+      'The Azure pricing calculator estimates the monthly cost of planned Azure resources before deployment. Azure Advisor gives best-practice recommendations, Azure Monitor collects metrics and logs, and Azure Service Health reports Azure service issues. The study guide lists "Explore the pricing calculator" under cost management in Azure.',
+  },
+];

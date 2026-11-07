@@ -1,21 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { QUESTIONS, QUESTIONS_SET_B, EXAM_FACTS } from '../questions';
-import { FAQ_ITEMS, FaqJsonLd, FaqSection } from '../faq';
+import { QUESTIONS, QUESTIONS_SET_B, QUESTIONS_AZ900, EXAM_FACTS, AZ900_FACTS } from '../questions';
+import { FAQ_ITEMS, AZ900_FAQ_ITEMS, FaqJsonLd, FaqSection } from '../faq';
 
-const SETS = [
-  { id: 'A', label: 'Set A', questions: QUESTIONS },
-  { id: 'B', label: 'Set B', questions: QUESTIONS_SET_B },
-];
+const EXAMS = {
+  clf: {
+    id: 'clf',
+    label: 'AWS Cloud Practitioner (CLF-C02)',
+    facts: EXAM_FACTS,
+    sets: [
+      { id: 'A', label: 'Set A', questions: QUESTIONS },
+      { id: 'B', label: 'Set B', questions: QUESTIONS_SET_B },
+    ],
+    faq: FAQ_ITEMS,
+    footer: 'Original questions written to the official CLF-C02 exam guide — not copied from AWS. Not affiliated with or endorsed by Amazon Web Services.',
+  },
+  az900: {
+    id: 'az900',
+    label: 'Microsoft Azure Fundamentals (AZ-900)',
+    facts: AZ900_FACTS,
+    sets: [{ id: 'A', label: 'Set A', questions: QUESTIONS_AZ900 }],
+    faq: AZ900_FAQ_ITEMS,
+    footer: 'Original questions written to the official AZ-900 study guide on Microsoft Learn — not copied from Microsoft. Not affiliated with or endorsed by Microsoft.',
+  },
+};
 
 export default function PracticeExam() {
+  const [examId, setExamId] = useState('clf');
   const [setId, setSetId] = useState('A');
   const [answers, setAnswers] = useState({}); // { questionId: optionIndex }
   const [submitted, setSubmitted] = useState(false);
 
-  const activeSet = SETS.find((s) => s.id === setId);
+  // Read ?exam=az900 from the URL on mount (client-side only, build-safe).
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('exam') === 'az900') setExamId('az900');
+    } catch {
+      // No query string available: keep the default exam.
+    }
+  }, []);
+
+  const exam = EXAMS[examId];
+  const activeSet = exam.sets.find((s) => s.id === setId) || exam.sets[0];
   const questions = activeSet.questions;
   const answeredCount = Object.keys(answers).length;
   const score = questions.filter((q) => answers[q.id] === q.answer).length;
@@ -24,6 +53,21 @@ export default function PracticeExam() {
   function choose(qid, idx) {
     if (submitted) return;
     setAnswers((prev) => ({ ...prev, [qid]: idx }));
+  }
+
+  function switchExam(id) {
+    setExamId(id);
+    setSetId('A');
+    setAnswers({});
+    setSubmitted(false);
+    try {
+      const url = new URL(window.location.href);
+      if (id === 'az900') url.searchParams.set('exam', 'az900');
+      else url.searchParams.delete('exam');
+      window.history.replaceState(null, '', url.toString());
+    } catch {
+      // History update is cosmetic; the exam switch already happened.
+    }
   }
 
   function switchSet(id) {
@@ -39,33 +83,51 @@ export default function PracticeExam() {
 
   return (
     <main style={styles.main}>
-      <FaqJsonLd items={FAQ_ITEMS} />
+      <FaqJsonLd items={exam.faq} />
       <Link href="/" style={styles.back}>← ExamPrep</Link>
-      <h1 style={styles.h1}>AWS Cloud Practitioner (CLF-C02) — Free Practice Exam</h1>
+      <h1 style={styles.h1}>{exam.label} — Free Practice Exam</h1>
       <p style={styles.tag}>
-        Two sets of 10 original questions in official exam style, covering all
-        four domains. Answer all 10, then check your score — every answer comes
-        with an explanation. The real exam is {EXAM_FACTS.questions} questions in{' '}
-        {EXAM_FACTS.timeMinutes} minutes, passing score {EXAM_FACTS.passingScore}.
+        {examId === 'clf'
+          ? `Two sets of 10 original questions in official exam style, covering all four domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${EXAM_FACTS.questions} questions in ${EXAM_FACTS.timeMinutes} minutes, passing score ${EXAM_FACTS.passingScore}.`
+          : `10 original questions in official exam style, covering all three domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${AZ900_FACTS.timeMinutes} minutes, passing score ${AZ900_FACTS.passingScore}.`}
       </p>
 
       <div style={styles.setRow}>
-        {SETS.map((s) => (
+        {Object.values(EXAMS).map((e) => (
           <button
-            key={s.id}
-            onClick={() => switchSet(s.id)}
+            key={e.id}
+            onClick={() => switchExam(e.id)}
             style={{
               ...styles.setButton,
-              background: setId === s.id ? '#111827' : '#fff',
-              color: setId === s.id ? '#fff' : '#111827',
+              background: examId === e.id ? '#111827' : '#fff',
+              color: examId === e.id ? '#fff' : '#111827',
             }}
           >
-            {s.label} — 10 questions
+            {e.id === 'clf' ? 'CLF-C02' : 'AZ-900'}
           </button>
         ))}
       </div>
+
+      {exam.sets.length > 1 && (
+        <div style={styles.setRow}>
+          {exam.sets.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => switchSet(s.id)}
+              style={{
+                ...styles.setButton,
+                background: setId === s.id ? '#111827' : '#fff',
+                color: setId === s.id ? '#fff' : '#111827',
+              }}
+            >
+              {s.label} — 10 questions
+            </button>
+          ))}
+        </div>
+      )}
       <p style={styles.setNote}>
-        Set {setId} · {setId === 'A' ? 'first mock set' : 'second mock set — new questions on different topics'}
+        {exam.label} · {activeSet.label}
+        {examId === 'clf' && (setId === 'A' ? ' · first mock set' : ' · second mock set — new questions on different topics')}
       </p>
 
       {submitted && (
@@ -75,7 +137,7 @@ export default function PracticeExam() {
           </h2>
           <p style={{ margin: 0 }}>
             {score === questions.length
-              ? 'Perfect score. Nice work — try the other set next.'
+              ? 'Perfect score. Nice work — try the other set or the other exam next.'
               : score >= 7
                 ? 'Solid. Review the explanations below, especially the ones you missed.'
                 : 'Keep studying — review every explanation below, then retake the set.'}
@@ -141,12 +203,9 @@ export default function PracticeExam() {
         </button>
       )}
 
-      <FaqSection items={FAQ_ITEMS} />
+      <FaqSection items={exam.faq} />
 
-      <footer style={styles.footer}>
-        Original questions written to the official CLF-C02 exam guide — not copied
-        from AWS. Not affiliated with or endorsed by Amazon Web Services.
-      </footer>
+      <footer style={styles.footer}>{exam.footer}</footer>
     </main>
   );
 }

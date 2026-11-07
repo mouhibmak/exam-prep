@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import { EXAM_FACTS } from './questions';
-import { FAQ_ITEMS, FaqJsonLd, FaqSection } from './faq';
+import { EXAM_FACTS, AZ900_FACTS } from './questions';
+import { FAQ_ITEMS, AZ900_FAQ_ITEMS, FaqJsonLd, FaqSection } from './faq';
 
 export default function Home() {
   return (
     <main style={styles.main}>
-      <FaqJsonLd items={FAQ_ITEMS} />
+      <FaqJsonLd items={[...FAQ_ITEMS, ...AZ900_FAQ_ITEMS]} />
       <h1 style={styles.h1}>ExamPrep</h1>
       <p style={styles.tag}>
-        Free practice exams for cloud certifications. Start with the AWS Certified
-        Cloud Practitioner (CLF-C02) — no sign-up.
+        Free practice exams for cloud certifications. Pick an exam below — no
+        sign-up.
       </p>
 
       <div style={styles.card}>
@@ -35,11 +35,34 @@ export default function Home() {
         </p>
       </div>
 
+      <div style={{ ...styles.card, marginTop: 24 }}>
+        <h2 style={styles.h2}>
+          {AZ900_FACTS.name} ({AZ900_FACTS.code}) — NEW
+        </h2>
+        <ul style={styles.facts}>
+          <li>{AZ900_FACTS.timeMinutes} minutes · Passing score: {AZ900_FACTS.passingScore}</li>
+          <li>Exam fee: {AZ900_FACTS.cost}</li>
+          <li>
+            Domains:{' '}
+            {AZ900_FACTS.domains.map((d) => `${d.name} ${d.weight}`).join(' · ')}
+          </li>
+        </ul>
+        <Link href="/practice-exam?exam=az900" style={styles.button}>
+          Take the free AZ-900 practice exam — 10 questions →
+        </Link>
+        <p style={styles.note}>
+          Original questions written to the official AZ-900 study guide on
+          Microsoft Learn (skills measured as of 20 July 2026) — not copied
+          from Microsoft. Not affiliated with or endorsed by Microsoft.
+        </p>
+      </div>
+
       <FaqSection items={FAQ_ITEMS} />
+      <FaqSection items={AZ900_FAQ_ITEMS} />
 
       <footer style={styles.footer}>
         ExamPrep — free practice first. Full 65-question timed mocks coming soon.
-        Not affiliated with or endorsed by Amazon Web Services.
+        Not affiliated with or endorsed by Amazon Web Services or Microsoft.
       </footer>
     </main>
   );
