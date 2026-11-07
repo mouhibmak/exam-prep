@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { EXAM_FACTS } from './questions';
+import { FAQ_ITEMS, FaqJsonLd, FaqSection } from './faq';
 
 export default function Home() {
   return (
     <main style={styles.main}>
+      <FaqJsonLd items={FAQ_ITEMS} />
       <h1 style={styles.h1}>ExamPrep</h1>
       <p style={styles.tag}>
         Free practice exams for cloud certifications. Start with the AWS Certified
@@ -24,7 +26,7 @@ export default function Home() {
           </li>
         </ul>
         <Link href="/practice-exam" style={styles.button}>
-          Take the free 10-question practice exam →
+          Take the free practice exam — 2 sets of 10 questions →
         </Link>
         <p style={styles.note}>
           Original questions written to the official exam guide — not copied from
@@ -32,6 +34,8 @@ export default function Home() {
           the AWS certification page on 7 Nov 2026.
         </p>
       </div>
+
+      <FaqSection items={FAQ_ITEMS} />
 
       <footer style={styles.footer}>
         ExamPrep — free practice first. Full 65-question timed mocks coming soon.

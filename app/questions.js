@@ -149,3 +149,116 @@ export const QUESTIONS = [
       'AWS Budgets lets you set a cost budget and sends alerts by email (or SNS) when actual or forecasted spending crosses a threshold. Cost Explorer analyzes past spending, Trusted Advisor gives best-practice recommendations, and the Pricing Calculator estimates costs before you build.',
   },
 ];
+
+// Set B — second 10-question mock set (added 7 Nov 2026). NEW original
+// questions on different CLF-C02 topics from Set A, written from the
+// official exam guide domains. NOT copied from AWS. Answers follow the
+// same official-source method as Set A (exam guide v1.2 May 2025 +
+// docs.aws.amazon.com); each answer's basis is noted in its explanation.
+export const QUESTIONS_SET_B = [
+  {
+    id: 11,
+    domain: 'Cloud Concepts (24%)',
+    question:
+      'An online store automatically adds more Amazon EC2 instances during a flash sale and removes them when traffic drops back to normal. Which cloud computing concept does this describe?',
+    options: ['Elasticity', 'High availability', 'Fault tolerance', 'Agility'],
+    answer: 0,
+    explanation:
+      'Elasticity is the ability to acquire resources as you need them and release them when you no longer need them. High availability and fault tolerance are about surviving failures, not about scaling capacity up and down with demand.',
+  },
+  {
+    id: 12,
+    domain: 'Cloud Concepts (24%)',
+    question:
+      'A company must keep some workloads in its own data center for regulatory reasons, but wants to run other workloads on AWS and connect the two environments. Which cloud deployment model is this?',
+    options: ['Public cloud', 'Private cloud', 'Hybrid cloud', 'Multi-cloud only'],
+    answer: 2,
+    explanation:
+      'A hybrid cloud combines on-premises infrastructure with cloud resources, connected so they work together. Public cloud is AWS-only, private cloud is a single organization\u2019s own infrastructure, and multi-cloud means using more than one cloud provider.',
+  },
+  {
+    id: 13,
+    domain: 'Security and Compliance (30%)',
+    question:
+      'A developer needs read-only access to one Amazon S3 bucket and nothing else. Following AWS security best practices, what should the administrator do?',
+    options: [
+      'Give the developer the root user credentials',
+      'Attach the AdministratorAccess managed policy to the developer\u2019s IAM user',
+      'Create an IAM policy that allows only s3:GetObject on that bucket and attach it to the developer\u2019s IAM user',
+      'Share another employee\u2019s access keys with the developer',
+    ],
+    answer: 2,
+    explanation:
+      'The principle of least privilege says to grant only the permissions needed to do the job — here, read-only access to one bucket. Root credentials and AdministratorAccess give far more access than needed, and access keys must never be shared between people.',
+  },
+  {
+    id: 14,
+    domain: 'Security and Compliance (30%)',
+    question:
+      'A company\u2019s auditor asks for on-demand access to AWS compliance reports and certifications such as ISO 27001 and SOC. Which AWS service provides these?',
+    options: ['AWS Artifact', 'AWS Config', 'AWS Trusted Advisor', 'AWS CloudTrail'],
+    answer: 0,
+    explanation:
+      'AWS Artifact is the self-service portal for on-demand access to AWS compliance reports and certifications. AWS Config records resource configuration changes, Trusted Advisor gives best-practice recommendations, and CloudTrail logs API activity.',
+  },
+  {
+    id: 15,
+    domain: 'Security and Compliance (30%)',
+    question:
+      'A company wants to control the encryption keys used to protect its data stored in Amazon S3 and other AWS services, including creating and rotating keys. Which service should it use?',
+    options: ['AWS Key Management Service (AWS KMS)', 'AWS Identity and Access Management (IAM)', 'AWS CloudTrail', 'AWS WAF'],
+    answer: 0,
+    explanation:
+      'AWS KMS creates and manages encryption keys and controls their use across AWS services. IAM manages identities and permissions, CloudTrail logs API calls, and AWS WAF is a web application firewall.',
+  },
+  {
+    id: 16,
+    domain: 'Cloud Technology and Services (34%)',
+    question:
+      'A company needs a fully managed relational database that supports MySQL and PostgreSQL, with automated backups and patching handled by AWS. Which service should it use?',
+    options: ['Amazon RDS', 'Amazon DynamoDB', 'Amazon S3', 'Amazon ElastiCache'],
+    answer: 0,
+    explanation:
+      'Amazon RDS is a managed relational database service supporting engines such as MySQL and PostgreSQL, with automated backups and patching. DynamoDB is a NoSQL database, S3 is object storage, and ElastiCache is an in-memory cache.',
+  },
+  {
+    id: 17,
+    domain: 'Cloud Technology and Services (34%)',
+    question:
+      'A web application runs on several Amazon EC2 instances. Which service distributes incoming traffic across those instances so no single instance is overloaded?',
+    options: ['Elastic Load Balancing', 'Amazon Route 53', 'Amazon CloudFront', 'AWS Auto Scaling'],
+    answer: 0,
+    explanation:
+      'Elastic Load Balancing distributes incoming traffic across multiple targets such as EC2 instances. Route 53 is a DNS service, CloudFront is a content delivery network, and Auto Scaling adjusts the number of instances — it does not distribute traffic itself.',
+  },
+  {
+    id: 18,
+    domain: 'Cloud Technology and Services (34%)',
+    question:
+      'A company wants to register a domain name for its website and route visitors to its AWS-hosted application using DNS. Which service provides both domain registration and DNS routing?',
+    options: ['Amazon Route 53', 'Amazon CloudFront', 'Amazon VPC', 'AWS Direct Connect'],
+    answer: 0,
+    explanation:
+      'Amazon Route 53 is a scalable DNS web service that also offers domain name registration. CloudFront distributes content, a VPC is an isolated virtual network, and Direct Connect is a dedicated private network link to AWS.',
+  },
+  {
+    id: 19,
+    domain: 'Cloud Technology and Services (34%)',
+    question:
+      'A company wants to move its on-premises database to Amazon RDS with minimal downtime, keeping the source database running during the migration. Which service is designed for this?',
+    options: ['AWS Database Migration Service (AWS DMS)', 'AWS Snowball', 'AWS DataSync', 'AWS CloudFormation'],
+    answer: 0,
+    explanation:
+      'AWS Database Migration Service migrates databases to AWS with minimal downtime, replicating ongoing changes while the source stays online. Snowball moves large amounts of data on physical devices, DataSync moves files, and CloudFormation provisions infrastructure as code.',
+  },
+  {
+    id: 20,
+    domain: 'Billing, Pricing, and Support (12%)',
+    question:
+      'Before building anything, a company wants a free estimate of what its planned AWS architecture would cost each month. Which tool should it use?',
+    options: ['AWS Pricing Calculator', 'AWS Cost Explorer', 'AWS Budgets', 'AWS Trusted Advisor'],
+    answer: 0,
+    explanation:
+      'The AWS Pricing Calculator estimates the cost of planned AWS services before you build. Cost Explorer analyzes past spending, Budgets alerts on spending thresholds, and Trusted Advisor gives optimization recommendations.',
+  },
+];

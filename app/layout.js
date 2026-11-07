@@ -1,9 +1,9 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'ExamPrep — Free AWS Cloud Practitioner (CLF-C02) Practice Exam',
+  title: 'Free AWS CLF-C02 Practice Exam | ExamPrep',
   description:
-    'Free AWS Certified Cloud Practitioner (CLF-C02) practice questions with instant scoring and explanations. No sign-up. Original questions written to the official exam guide.',
+    'Free AWS Certified Cloud Practitioner (CLF-C02) practice exam: 20 original questions in two sets, instant scoring and explanations. No sign-up.',
 };
 
 export default function RootLayout({ children }) {

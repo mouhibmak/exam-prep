@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://exam-prep-mouhib2.vercel.app/sitemap.xml
