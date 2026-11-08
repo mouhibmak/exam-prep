@@ -419,3 +419,184 @@ export const QUESTIONS_AZ900 = [
       'The Azure pricing calculator estimates the monthly cost of planned Azure resources before deployment. Azure Advisor gives best-practice recommendations, Azure Monitor collects metrics and logs, and Azure Service Health reports Azure service issues. The study guide lists "Explore the pricing calculator" under cost management in Azure.',
   },
 ];
+
+// ---------------------------------------------------------------------------
+// SAA-C03 — AWS Certified Solutions Architect – Associate (added 8 Nov 2026)
+// 10 original practice questions, written in official exam style, NOT copied
+// from AWS. Every answer is grounded in the official SAA-C03 exam guide
+// (version 1.1, read directly as PDF from d1.awsstatic.com) and the AWS
+// documentation pages listed in ../verification-saa.md.
+// Per-question verification: ../verification-saa.md — 10/10 correct.
+// Exam facts: 65 questions (50 scored), 130 minutes, pass 720/1,000 scaled,
+// $150 USD, valid 3 years — exam guide + AWS certification page.
+// No pass-rate claims, no AWS endorsement anywhere on this site.
+
+export const SAA_FACTS = {
+  code: 'SAA-C03',
+  name: 'AWS Certified Solutions Architect – Associate',
+  questions: 65,
+  scoredQuestions: 50,
+  timeMinutes: 130,
+  passingScore: '720 / 1,000 (scaled)',
+  cost: '$150 USD',
+  validity: '3 years',
+  domains: [
+    { name: 'Design Secure Architectures', weight: 30 },
+    { name: 'Design Resilient Architectures', weight: 26 },
+    { name: 'Design High-Performing Architectures', weight: 24 },
+    { name: 'Design Cost-Optimized Architectures', weight: 20 },
+  ],
+};
+
+export const QUESTIONS_SAA = [
+  {
+    id: 201,
+    domain: 'Design Secure Architectures (30%)',
+    question:
+      'An application running on an Amazon EC2 instance needs to read files from a specific Amazon S3 bucket. Following AWS security best practices, how should the application get the permissions it needs?',
+    options: [
+      'Store an IAM user\u2019s access keys in a file on the EC2 instance',
+      'Attach an IAM role to the EC2 instance that grants read-only access to that S3 bucket',
+      'Share the AWS account root user credentials with the application',
+      'Make the S3 bucket public so the application needs no credentials',
+    ],
+    answer: 1,
+    explanation:
+      'An IAM role attached to the EC2 instance (via an instance profile) supplies temporary credentials automatically, so no long-term access keys have to be stored on the instance. The role\u2019s policy can grant read-only access to just that one bucket, following the principle of least privilege. The exam guide (task 1.1) lists applying security best practices to IAM users and root users and designing a flexible authorization model with IAM users, groups, roles, and policies.',
+  },
+  {
+    id: 202,
+    domain: 'Design Secure Architectures (30%)',
+    question:
+      'A company runs application servers in private subnets of a VPC. The servers must read objects from Amazon S3, but the company wants to avoid paying for a NAT gateway for this traffic. Which solution meets these requirements at the lowest cost?',
+    options: [
+      'Route the S3 traffic through a NAT gateway in a public subnet',
+      'Add an internet gateway and move the servers to public subnets',
+      'Create a gateway VPC endpoint for Amazon S3 and add its route to the private subnet route tables',
+      'Create an interface VPC endpoint for Amazon S3 in each Availability Zone',
+    ],
+    answer: 2,
+    explanation:
+      'A gateway VPC endpoint provides connectivity to Amazon S3 (and DynamoDB) from private subnets without an internet gateway or a NAT device, and there is no additional charge for using gateway endpoints. A NAT gateway would add hourly and data-processing charges, an internet gateway would require public subnets, and an interface endpoint is the wrong endpoint type for S3 — and it is charged hourly. The exam guide (task 1.2) covers VPC architectures with security components and securing external network connections.',
+  },
+  {
+    id: 203,
+    domain: 'Design Secure Architectures (30%)',
+    question:
+      'A company stores sensitive customer records in Amazon S3 and must encrypt the data at rest with keys that the company itself creates, manages, and can rotate. Which service should it use?',
+    options: [
+      'AWS Key Management Service (AWS KMS)',
+      'AWS Certificate Manager (ACM)',
+      'AWS Secrets Manager',
+      'AWS Identity and Access Management (IAM)',
+    ],
+    answer: 0,
+    explanation:
+      'AWS KMS creates and manages encryption keys and controls their use, including key rotation — it is the service for encrypting data at rest with customer-managed keys. The exam guide (task 1.3) lists "Encrypting data at rest (for example, AWS Key Management Service [AWS KMS])" and "Rotating encryption keys". ACM issues TLS certificates for data in transit, Secrets Manager stores credentials and secrets, and IAM manages identities and permissions.',
+  },
+  {
+    id: 204,
+    domain: 'Design Resilient Architectures (26%)',
+    question:
+      'A web application accepts orders and sends each order to a backend service for processing. During traffic spikes the backend cannot keep up, and orders are lost when the web servers are busy. Which design change makes the system resilient to these spikes?',
+    options: [
+      'Have the web servers call the backend service directly and synchronously, retrying until it answers',
+      'Place an Amazon SQS queue between the web servers and the backend service so orders wait safely until the backend can process them',
+      'Store the orders in an Amazon S3 bucket and have the backend poll the bucket every hour',
+      'Run the backend service on a larger EC2 instance type',
+    ],
+    answer: 1,
+    explanation:
+      'Amazon SQS is a hosted queue that lets you integrate and decouple distributed systems: producers send messages to the queue and consumers process them at their own pace, so a spike in orders is buffered instead of lost. The exam guide (task 2.1) lists queuing and messaging concepts and determining the AWS services required to achieve loose coupling. Direct synchronous calls fail when the backend is busy, hourly polling adds delay, and a larger instance does not decouple the tiers.',
+  },
+  {
+    id: 205,
+    domain: 'Design Resilient Architectures (26%)',
+    question:
+      'A company runs a critical database on Amazon RDS. The database must stay available if the Availability Zone hosting it fails, with automatic failover to a standby. Which solution meets this requirement?',
+    options: [
+      'Enable a Multi-AZ deployment on the RDS DB instance',
+      'Create a read replica in the same Availability Zone',
+      'Enable automated backups with a 7-day retention period',
+      'Migrate the database to Amazon DynamoDB',
+    ],
+    answer: 0,
+    explanation:
+      'A Multi-AZ DB instance deployment keeps a standby DB instance in a different Availability Zone that provides failover support — if the primary fails, RDS automatically fails over to the standby. A read replica in the same Availability Zone does not survive that zone failing and does not provide automatic failover, automated backups alone do not provide automatic failover, and migrating to DynamoDB is a different database engine, not a failover design. The exam guide (task 2.2) covers highly available and fault-tolerant architectures across Availability Zones and failover strategies.',
+  },
+  {
+    id: 206,
+    domain: 'Design Resilient Architectures (26%)',
+    question:
+      'A web application runs on Amazon EC2 instances behind an Application Load Balancer. Traffic varies widely during the day, and the company wants the number of instances to grow and shrink automatically with demand while staying spread across Availability Zones. Which solution meets these requirements?',
+    options: [
+      'Use one large EC2 instance and scale it vertically when traffic grows',
+      'Create an Auto Scaling group spanning multiple Availability Zones, with scaling policies based on demand',
+      'Launch a fixed number of EC2 instances manually each morning',
+      'Use AWS Lambda to replace the EC2 instances entirely',
+    ],
+    answer: 1,
+    explanation:
+      'An Auto Scaling group launches or terminates EC2 instances as demand increases or decreases, and it balances instances evenly across the Availability Zones you specify, protecting the application from a failure in a single location. It also registers and deregisters instances with the load balancer automatically. Vertical scaling on one instance has a ceiling and a single point of failure, manual launches cannot react to demand, and replacing the whole application with Lambda is not the requirement. The exam guide (tasks 2.1 and 3.2) covers scaling strategies and Auto Scaling.',
+  },
+  {
+    id: 207,
+    domain: 'Design High-Performing Architectures (24%)',
+    question:
+      'A read-heavy application queries the same product catalog data from its Amazon RDS database thousands of times per minute. The data changes rarely, but database CPU is now the bottleneck. Which solution reduces the load on the database most effectively?',
+    options: [
+      'Add an Amazon ElastiCache in-memory cache in front of the database for the frequently read catalog data',
+      'Increase the RDS instance size to the largest available',
+      'Enable Multi-AZ on the RDS DB instance',
+      'Move the catalog data to Amazon S3 Glacier Deep Archive',
+    ],
+    answer: 0,
+    explanation:
+      'Amazon ElastiCache is a managed in-memory data store / cache: frequently read, rarely changing data is served from memory instead of hitting the database, which removes the read load from RDS. The exam guide (task 3.3) lists caching strategies and services such as Amazon ElastiCache and integrating caching to meet business requirements. A larger instance only postpones the bottleneck, Multi-AZ is for availability not read performance, and Glacier Deep Archive is for long-term archival with hours-long retrieval.',
+  },
+  {
+    id: 208,
+    domain: 'Design High-Performing Architectures (24%)',
+    question:
+      'A company serves static website content — images, stylesheets, and JavaScript — from an Amazon S3 bucket to users around the world. Users far from the bucket\u2019s Region experience slow page loads. Which service delivers this content to global users with the lowest latency?',
+    options: [
+      'Amazon CloudFront, with the S3 bucket as the origin',
+      'Amazon Route 53 with a single A record pointing to the S3 bucket',
+      'AWS Global Accelerator with an Application Load Balancer endpoint',
+      'Amazon API Gateway in front of the S3 bucket',
+    ],
+    answer: 0,
+    explanation:
+      'Amazon CloudFront is a content delivery network: it caches copies of your content in edge locations around the world, and each user request is routed to the edge location with the lowest latency. The exam guide (tasks 3.4 and 3.5) lists edge networking services with appropriate use cases, including Amazon CloudFront. Route 53 is DNS, not a cache; Global Accelerator accelerates traffic to application endpoints such as load balancers, not static S3 content; API Gateway fronts APIs, not static websites.',
+  },
+  {
+    id: 209,
+    domain: 'Design Cost-Optimized Architectures (20%)',
+    question:
+      'A company must keep compliance records in Amazon S3 for 7 years. The records are almost never accessed, retrieval can take several hours, and the company wants the lowest possible storage cost. Which storage solution fits best?',
+    options: [
+      'Keep the records in S3 Standard',
+      'Use an S3 lifecycle policy to transition the records to S3 Glacier Deep Archive',
+      'Use an S3 lifecycle policy to transition the records to S3 Standard-IA',
+      'Store the records in S3 Intelligent-Tiering with no archive tiers enabled',
+    ],
+    answer: 1,
+    explanation:
+      'S3 Glacier Deep Archive is designed for low-cost, long-term data archiving of data that is rarely accessed — the lowest-cost S3 storage class — and retrieval takes hours, which the requirement allows. A lifecycle policy can transition objects there automatically. S3 Standard is the most expensive option for data that is almost never read, Standard-IA is for infrequently accessed data that still needs millisecond access, and Intelligent-Tiering without archive tiers never reaches archival pricing. The exam guide (task 4.1) covers storage tiering, cold tiering for object storage, and managing S3 object lifecycles.',
+  },
+  {
+    id: 210,
+    domain: 'Design Cost-Optimized Architectures (20%)',
+    question:
+      'A startup is building an application on Amazon DynamoDB. Traffic is unpredictable — it may spike suddenly and stay low for weeks — and the team does not want to plan or manage read and write capacity. Which DynamoDB capacity mode should it choose?',
+    options: [
+      'On-demand mode, which charges per request and scales automatically with no capacity planning',
+      'Provisioned mode with a fixed amount of read and write capacity units',
+      'Provisioned mode with auto scaling disabled',
+      'On-demand mode with a fixed monthly capacity reservation',
+    ],
+    answer: 0,
+    explanation:
+      'DynamoDB on-demand mode is a serverless throughput option: you pay per request for only what you use, you do not specify how much read and write throughput you expect, and DynamoDB scales automatically to support workloads that start small and grow to millions of requests per second. Provisioned mode requires you to specify reads and writes per second and charges for the capacity you provision whether or not you use it. There is no fixed monthly capacity reservation in on-demand mode. The exam guide (task 4.3) covers cost-effective database services and capacity planning.',
+  },
+];

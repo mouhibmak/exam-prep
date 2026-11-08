@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { QUESTIONS, QUESTIONS_SET_B, QUESTIONS_AZ900, EXAM_FACTS, AZ900_FACTS } from '../questions';
-import { FAQ_ITEMS, AZ900_FAQ_ITEMS, FaqJsonLd, FaqSection } from '../faq';
+import { QUESTIONS, QUESTIONS_SET_B, QUESTIONS_AZ900, QUESTIONS_SAA, EXAM_FACTS, AZ900_FACTS, SAA_FACTS } from '../questions';
+import { FAQ_ITEMS, AZ900_FAQ_ITEMS, SAA_FAQ_ITEMS, FaqJsonLd, FaqSection } from '../faq';
 
 const EXAMS = {
   clf: {
     id: 'clf',
+    short: 'CLF-C02',
     label: 'AWS Cloud Practitioner (CLF-C02)',
     facts: EXAM_FACTS,
     sets: [
@@ -15,15 +16,28 @@ const EXAMS = {
       { id: 'B', label: 'Set B', questions: QUESTIONS_SET_B },
     ],
     faq: FAQ_ITEMS,
+    tag: `Two sets of 10 original questions in official exam style, covering all four domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${EXAM_FACTS.questions} questions in ${EXAM_FACTS.timeMinutes} minutes, passing score ${EXAM_FACTS.passingScore}.`,
     footer: 'Original questions written to the official CLF-C02 exam guide — not copied from AWS. Not affiliated with or endorsed by Amazon Web Services.',
   },
   az900: {
     id: 'az900',
+    short: 'AZ-900',
     label: 'Microsoft Azure Fundamentals (AZ-900)',
     facts: AZ900_FACTS,
     sets: [{ id: 'A', label: 'Set A', questions: QUESTIONS_AZ900 }],
     faq: AZ900_FAQ_ITEMS,
+    tag: `10 original questions in official exam style, covering all three domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${AZ900_FACTS.timeMinutes} minutes, passing score ${AZ900_FACTS.passingScore}.`,
     footer: 'Original questions written to the official AZ-900 study guide on Microsoft Learn — not copied from Microsoft. Not affiliated with or endorsed by Microsoft.',
+  },
+  saa: {
+    id: 'saa',
+    short: 'SAA-C03',
+    label: 'AWS Certified Solutions Architect – Associate (SAA-C03)',
+    facts: SAA_FACTS,
+    sets: [{ id: 'A', label: 'Set A', questions: QUESTIONS_SAA }],
+    faq: SAA_FAQ_ITEMS,
+    tag: `10 original scenario-based questions in official exam style, covering all four domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${SAA_FACTS.questions} questions (${SAA_FACTS.scoredQuestions} scored) in ${SAA_FACTS.timeMinutes} minutes, passing score ${SAA_FACTS.passingScore}.`,
+    footer: 'Original questions written to the official SAA-C03 exam guide (version 1.1) and AWS documentation — not copied from AWS. Not affiliated with or endorsed by Amazon Web Services.',
   },
 };
 
@@ -33,11 +47,12 @@ export default function PracticeExam() {
   const [answers, setAnswers] = useState({}); // { questionId: optionIndex }
   const [submitted, setSubmitted] = useState(false);
 
-  // Read ?exam=az900 from the URL on mount (client-side only, build-safe).
+  // Read ?exam=az900 / ?exam=saa from the URL on mount (client-side only, build-safe).
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
-      if (params.get('exam') === 'az900') setExamId('az900');
+      const examParam = params.get('exam');
+      if (examParam === 'az900' || examParam === 'saa') setExamId(examParam);
     } catch {
       // No query string available: keep the default exam.
     }
@@ -62,7 +77,7 @@ export default function PracticeExam() {
     setSubmitted(false);
     try {
       const url = new URL(window.location.href);
-      if (id === 'az900') url.searchParams.set('exam', 'az900');
+      if (id === 'az900' || id === 'saa') url.searchParams.set('exam', id);
       else url.searchParams.delete('exam');
       window.history.replaceState(null, '', url.toString());
     } catch {
@@ -86,11 +101,7 @@ export default function PracticeExam() {
       <FaqJsonLd items={exam.faq} />
       <Link href="/" style={styles.back}>← ExamPrep</Link>
       <h1 style={styles.h1}>{exam.label} — Free Practice Exam</h1>
-      <p style={styles.tag}>
-        {examId === 'clf'
-          ? `Two sets of 10 original questions in official exam style, covering all four domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${EXAM_FACTS.questions} questions in ${EXAM_FACTS.timeMinutes} minutes, passing score ${EXAM_FACTS.passingScore}.`
-          : `10 original questions in official exam style, covering all three domains. Answer all 10, then check your score — every answer comes with an explanation. The real exam is ${AZ900_FACTS.timeMinutes} minutes, passing score ${AZ900_FACTS.passingScore}.`}
-      </p>
+      <p style={styles.tag}>{exam.tag}</p>
 
       <div style={styles.setRow}>
         {Object.values(EXAMS).map((e) => (
@@ -103,7 +114,7 @@ export default function PracticeExam() {
               color: examId === e.id ? '#fff' : '#111827',
             }}
           >
-            {e.id === 'clf' ? 'CLF-C02' : 'AZ-900'}
+            {e.short}
           </button>
         ))}
       </div>

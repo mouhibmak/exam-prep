@@ -81,3 +81,29 @@ export const AZ900_FAQ_ITEMS = [
     a: 'No. A 10-question practice set is a study aid, not a pass/fail prediction. Use it to find weak topics, read the explanations, and then study the official AZ-900 study guide and Microsoft Learn training.',
   },
 ];
+
+// FAQ for the SAA-C03 (AWS Certified Solutions Architect – Associate) pages.
+// Same pattern as the CLF-C02 and AZ-900 FAQs: visible on the page and as
+// JSON-LD FAQPage schema. No pass-rate or endorsement claims.
+export const SAA_FAQ_ITEMS = [
+  {
+    q: 'Is this SAA-C03 practice exam really free?',
+    a: 'Yes. All 10 SAA-C03 practice questions are free, with instant scoring and explanations. No sign-up, no account, and no payment details are asked for.',
+  },
+  {
+    q: 'Are these the official AWS exam questions?',
+    a: 'No. These are original questions written in official exam style, based on the topics in the official SAA-C03 exam guide (version 1.1). Official AWS questions are copyrighted and are not used here. ExamPrep is not affiliated with or endorsed by Amazon Web Services.',
+  },
+  {
+    q: 'What does the real SAA-C03 exam cover?',
+    a: 'Four domains: Design Secure Architectures (30%), Design Resilient Architectures (26%), Design High-Performing Architectures (24%), and Design Cost-Optimized Architectures (20%), per the official SAA-C03 exam guide. The exam has 65 questions (50 scored), lasts 130 minutes, the passing score is 720 out of 1,000 on a scaled basis, and the exam fee is $150 USD.',
+  },
+  {
+    q: 'How is SAA-C03 different from the AWS Cloud Practitioner exam?',
+    a: 'CLF-C02 is a foundational exam about what AWS services are and when to use them. SAA-C03 is the associate-level architect exam: scenario-based questions ask you to design secure, resilient, high-performing, and cost-optimized solutions — choosing the right service and configuration for a business situation. This site offers free practice sets for both.',
+  },
+  {
+    q: 'Does my practice score predict whether I will pass the real SAA-C03 exam?',
+    a: 'No. A 10-question practice set is a study aid, not a pass/fail prediction. Use it to find weak topics, read the explanations, and then study the official SAA-C03 exam guide and AWS documentation.',
+  },
+];

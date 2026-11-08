@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { EXAM_FACTS, AZ900_FACTS } from './questions';
-import { FAQ_ITEMS, AZ900_FAQ_ITEMS, FaqJsonLd, FaqSection } from './faq';
+import { EXAM_FACTS, AZ900_FACTS, SAA_FACTS } from './questions';
+import { FAQ_ITEMS, AZ900_FAQ_ITEMS, SAA_FAQ_ITEMS, FaqJsonLd, FaqSection } from './faq';
 
 export default function Home() {
   return (
     <main style={styles.main}>
-      <FaqJsonLd items={[...FAQ_ITEMS, ...AZ900_FAQ_ITEMS]} />
+      <FaqJsonLd items={[...FAQ_ITEMS, ...AZ900_FAQ_ITEMS, ...SAA_FAQ_ITEMS]} />
       <h1 style={styles.h1}>ExamPrep</h1>
       <p style={styles.tag}>
         Free practice exams for cloud certifications. Pick an exam below — no
@@ -57,8 +57,32 @@ export default function Home() {
         </p>
       </div>
 
+      <div style={{ ...styles.card, marginTop: 24 }}>
+        <h2 style={styles.h2}>
+          {SAA_FACTS.name} ({SAA_FACTS.code}) — NEW
+        </h2>
+        <ul style={styles.facts}>
+          <li>{SAA_FACTS.questions} questions ({SAA_FACTS.scoredQuestions} scored) in {SAA_FACTS.timeMinutes} minutes</li>
+          <li>Passing score: {SAA_FACTS.passingScore}</li>
+          <li>Exam fee: {SAA_FACTS.cost} · Valid for {SAA_FACTS.validity}</li>
+          <li>
+            Domains:{' '}
+            {SAA_FACTS.domains.map((d) => `${d.name} ${d.weight}%`).join(' · ')}
+          </li>
+        </ul>
+        <Link href="/practice-exam?exam=saa" style={styles.button}>
+          Take the free SAA-C03 practice exam — 10 questions →
+        </Link>
+        <p style={styles.note}>
+          Original questions written to the official SAA-C03 exam guide
+          (version 1.1) and AWS documentation — not copied from AWS. Not
+          affiliated with or endorsed by Amazon Web Services.
+        </p>
+      </div>
+
       <FaqSection items={FAQ_ITEMS} />
       <FaqSection items={AZ900_FAQ_ITEMS} />
+      <FaqSection items={SAA_FAQ_ITEMS} />
 
       <footer style={styles.footer}>
         ExamPrep — free practice first. Full 65-question timed mocks coming soon.
